@@ -1,0 +1,22 @@
+{
+  "name": "dyslexai",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "body-parser": "^2.2.0",
+    "compromise": "^14.14.4",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "natural": "^8.0.1",
+    "pluralize": "^8.0.0",
+    "wordnet": "^2.0.0"
+  }
+}

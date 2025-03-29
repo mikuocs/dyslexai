@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DyslexAI - Програма за помощ при дислексия</title>
+    <style>
+        @font-face {
+            font-family: 'OpenDyslexic';
+            src: url('/fonts/OpenDyslexic-Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Global Styles */
+        body {
+            font-family: 'OpenDyslexic', Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            position: relative; /* To position the images relative to the body */
+        }
+
+        h1 {
+            font-size: 2.4em;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Logo styles */
+        .logo {
+            height: 400px;
+            margin-right: 15px;
+        }
+
+        /* Flexbox container for layout */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background-color: white;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 32%; /* Set width of form container */
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;  /* Center content vertically */
+            align-items: center;  /* Center content horizontally */
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-family: 'OpenDyslexic', Arial, sans-serif;
+            font-size: 1em;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box; /* Ensure padding is included in the width */
+        }
+
+        textarea:focus {
+            border-color: #457b9d;
+        }
+
+        button {
+            padding: 12px;
+            font-size: 1.1em;
+            background-color: #457b9d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: #1d3557;
+            transform: scale(1.05);
+        }
+
+        /* Output Styles */
+        .output-container {
+            background-color: white;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 32%; /* Set width of output container */
+            border-radius: 8px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .output {
+            font-size: 2em;
+            line-height: 1.6;
+            word-wrap: break-word;
+            letter-spacing: 0.5px;
+            color: #333;
+            text-align: left;
+            white-space: pre-wrap;  /* Ensure line breaks are preserved */
+        }
+
+        .output span {
+            font-weight: bold;
+        }
+
+        .output em {
+            font-style: italic;
+        }
+
+        /* Info Bubble Styles */
+        .info-container {
+            background-color: #eef2f7;
+            padding: 20px;
+            width: 32%; /* Set width of info container */
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 1em;
+            font-style: italic;
+            color: #333;
+        }
+
+        .info-container h2 {
+            font-size: 1.5em;
+            color: #457b9d;
+            margin-bottom: 10px;
+        }
+
+        .info-container p {
+            text-align: center;
+        }
+
+        /* Position the PNG images at bottom corners */
+        .bottom-left {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 160px; /* Adjust the size */
+        }
+
+        .bottom-right {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 300px; /* Adjust the size */
+        }
+
+        /* Responsive Design for mobile */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack containers vertically */
+                gap: 0;
+                align-items: center; /* Center align everything */
+            }
+
+            .form-container, .output-container, .info-container {
+                width: 100%; /* Full width for mobile */
+                padding: 20px;
+                box-sizing: border-box;
+                margin-bottom: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            button {
+                font-size: 1em;
+            }
+
+            .bottom-left,
+            .bottom-right {
+                width: 70px; /* Smaller size for responsiveness */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>
+        <img src="logo.svg" alt="DyslexAI Logo" class="logo">
+    </h1>
+
+    <!-- Main container to hold input, output, and info sections -->
+    <div class="container">
+        <!-- Input Text Area -->
+        <div class="form-container">
+            <form method="POST" id="inputForm">
+                <textarea name="inputText" id="inputText" placeholder="Input text here..."></textarea><br>
+                <button type="submit">Transform</button>
+            </form>
+        </div>
+
+        <!-- Output Text Area -->
+        <div class="output-container">
+            <h2>Transformed:</h2>
+            <div class="output" id="outputText"></div>
+        </div>
+
+        <!-- Info about the project (Static Text Bubble) -->
+        <div class="info-container">
+            <h2>Words to use for testing.</h2>
+            <p>dog, saw, affect, principle, sight, cite, adapt, adopt, advice, advise, effect, except, access, excess</p>
+            <p>For the sake of prototyping the database only contains these words.</p>
+        </div>
+    </div>
+
+    <!-- PNG Images at Bottom Corners -->
+    <img src="sft.png" alt="SFT Logo" class="bottom-right">
+    <img src="gre.png" alt="PGRE Logo" class="bottom-left">
+
+    <script>
+        document.getElementById('inputForm').addEventListener('submit', function (event) {
+            event.preventDefault();  
+
+            const inputText = document.getElementById('inputText').value;
+
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ inputText: inputText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('outputText').innerHTML = data.transformedText;
+            });
+        });
+    </script>
+
+</body>
+</html>
